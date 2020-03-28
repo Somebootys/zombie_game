@@ -1,10 +1,14 @@
 #include<iostream>
-#include<SFML/Graphics.hpp>
-#include "player.h"
-#include "main.h"
 #include<math.h>
+#include<SFML/Graphics.hpp>
+
+#include "main.h"
+#include "player.h"
+#include "TextureHolder.h"
+
 int main()
 {
+  TextureHolder holder; 
   //The has four states and will always be in 1 of four states
   enum class State
     {
@@ -48,7 +52,10 @@ sf::VertexArray background;
 sf::Texture textureBackground;
 textureBackground.loadFromFile("graphics/background_sheet.png");
 
-
+// Prepare Zombies
+int numZombies;
+int numZombiesAlive;
+Zombie* zombies = nullptr; 
 
 
 // the main game loop ------------------------------------------
@@ -166,8 +173,17 @@ while (window.isOpen())
       player.spawn(arena, resolution, tileSize);
       // Reset the clock so there isn't a frame jump 
       
-      clock.restart();
-    }
+         // Create a horde of zombies
+   numZombies = 10;
+
+   // Delete the previously allocated memory (if it exists)
+   delete[] zombies;
+   zombies = createHorde(numZombies, arena);
+   numZombiesAlive = numZombies; 
+ 
+   // Reset the clock so there isn't a frame jump 
+   clock.restart(); 
+    
     } /// End Handle LEVELING 
     
     /*
@@ -201,7 +217,17 @@ while (window.isOpen())
     
     //Make the view centre around the player 
     mainView.setCenter(player.getCenter());
-   } // End updating scen 
+    
+    // Loop through each zombie and update them 
+    for ( int i = 0 < numZombies; i++)
+    {
+      if (zombies[i].isAlive())
+      {
+        zombies[i].update(dt.asSeconds(), playerPosition);
+      }
+    }
+   
+   }// End updating scen 
         /*
      **************
      Draw the scene
@@ -217,6 +243,12 @@ while (window.isOpen())
         
         //draw the bakground / arena 
         window.draw(background, &textureBackground);
+        
+        //Draw the zombies 
+        for (int i = 0 ; i < numZombies ; i++)
+        {
+          window.draw(zombies[i].getSprite());
+        }
 
         // Draw the player
         window.draw(player.getSprite());
@@ -234,6 +266,8 @@ while (window.isOpen())
      window.display(); 
   }  // end game loop
   
+  //Deleting the previous zombies in case they where created 
+  delete[] zombies; 
   return 0; 
 }
 
