@@ -1,0 +1,3 @@
+g++ LearnC_Sound.cpp -o learn2 -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+g++ -o main -I Player.cpp Player.h -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+

@@ -1,0 +1,52 @@
+#inlcude<iosteam>
+#include<SFML/Graphics.hpp>
+#include "Player.h"
+
+int main()
+{
+  //The has four states and will always be in 1 of four states
+  enum class State
+    {
+     PAUSED, LEVELING_UP,GAME_OVER,PLAYING
+    };
+
+  
+  // The GAME OVER STATE
+  State::GAME_OVER;
+
+  //Get screen resolution and creat an SFML window
+  sf::Vector2f resolution;
+  resolution.x = sf::VideoMode::getDesktopMode().width;
+  resolution.y = sf::VideoMode::getDesktopMode().height);
+
+sf::RenderWindow window(sf::VideoMode(resolution.x, resolution.y),
+			"Zombie Game", sf::Style::Fullscreen);
+
+//Create an SFML window for main action
+sf::View mainView(sf::FloatRect(0,0,resolution.x,resolution.y));
+
+sf::Clock clock;
+
+//how long has the PLAYING_STATE been active
+sf::Time gameTimeTotal;
+
+//Where is the mouse in relation to the world coordinations
+sf::Vector2f mouseWorldPosition;
+// where is the mouse in relation to the screen coordinates
+sf::vector2i mouseScreenPosition;
+
+// Create an instance of the Player class
+Player player;
+
+//The boundaries of the arena
+sf::IntRect arena;
+
+// the main game loop ------------------------------------------
+while (window.isOpen())
+  {
+    //Put game stuff here like last time "Time stamp 3min:23sec in totutial 
+  }
+  
+  return 0; 
+}
+

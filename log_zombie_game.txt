@@ -1,0 +1,3 @@
+In the project I have created a textureholder 
+"A singleton is a design pattern, a way to structure our code that is proven to work"
+this is according to john horton to avoid us having to worry about running out of memory, but why? 
