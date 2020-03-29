@@ -1,3 +1,9 @@
 In the project I have created a textureholder 
 "A singleton is a design pattern, a way to structure our code that is proven to work"
 this is according to john horton to avoid us having to worry about running out of memory, but why? 
+
+"main.h:4:1: error: ‘Zombie’ does not name a type " this error was caused because i had not declared the class Zombie in the start of the document.
+
+The game now starts but is frozen. Why ? Missplacement of a bracket maybe.
+
+

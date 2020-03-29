@@ -1,10 +1,17 @@
 #include<iostream>
 #include<math.h>
 #include<SFML/Graphics.hpp>
-
+#include <cstdlib> 
+#include <ctime> 
+#include<math.h>
+//#include "createHorde.h"
 #include "main.h"
 #include "player.h"
 #include "TextureHolder.h"
+#include "Zombie.h"
+
+
+
 
 int main()
 {
@@ -61,11 +68,13 @@ Zombie* zombies = nullptr;
 // the main game loop ------------------------------------------
 while (window.isOpen())
   {
-    //Put game stuff here like last time "Time stamp 3min:23sec in totutial 
+     //Put game stuff here like last time "Time stamp 3min:23sec in totutial 
     
     sf::Event event;
     while (window.pollEvent(event))
     {
+    if (event.type == sf::Event::KeyPressed)
+      {
       if(event.type==sf::Keyboard::Return && 
       state== State::PLAYING)
       {
@@ -82,9 +91,10 @@ while (window.isOpen())
       if (state ==State::PLAYING)
       {
         //the main game here 
-        
       }
-    }
+  
+      } 
+     } // end of while  (pollEvent)
     // How to quit 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
@@ -155,11 +165,12 @@ while (window.isOpen())
     {
       state = State::PLAYING;
     }
+    
     if (state == State::PLAYING)
     {
       //Prepare level
-      arena.width  =500;
-      arena.height = 500; 
+      arena.width  =1000;
+      arena.height = 1000; 
       arena.left   = 0;
       arena.top    = 0; 
       
@@ -177,13 +188,13 @@ while (window.isOpen())
    numZombies = 10;
 
    // Delete the previously allocated memory (if it exists)
-   delete[] zombies;
+  delete[] zombies;
    zombies = createHorde(numZombies, arena);
    numZombiesAlive = numZombies; 
  
    // Reset the clock so there isn't a frame jump 
    clock.restart(); 
-    
+    }
     } /// End Handle LEVELING 
     
     /*
@@ -219,7 +230,7 @@ while (window.isOpen())
     mainView.setCenter(player.getCenter());
     
     // Loop through each zombie and update them 
-    for ( int i = 0 < numZombies; i++)
+    for ( int i = 0; i < numZombies; i++)
     {
       if (zombies[i].isAlive())
       {
@@ -252,7 +263,7 @@ while (window.isOpen())
 
         // Draw the player
         window.draw(player.getSprite());
-     }
+          }
 
      if (state == State::LEVELING_UP)
      {
@@ -262,12 +273,10 @@ while (window.isOpen())
      }
      if (state == State::GAME_OVER)
      {
+     
      }
      window.display(); 
-  }  // end game loop
-  
-  //Deleting the previous zombies in case they where created 
-  delete[] zombies; 
+  }// end game loop 
   return 0; 
-}
-
+  
+  }

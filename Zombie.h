@@ -1,6 +1,9 @@
 #pragma once
 #include<SFML/Graphics.hpp>
-
+#include "TextureHolder.h" 
+#include <cstdlib> 
+#include <ctime> 
+#include<math.h>
 
 class Zombie
 {
@@ -20,7 +23,7 @@ const int MAX_VARRIANCE = 30;
 const int OFFSET = 101 - MAX_VARRIANCE;
 
 //zombie's position 
-sf::Vector2f m_Postion;
+sf::Vector2f m_Position;
 
 //Zombie sprite 
 sf::Sprite m_Sprite;
@@ -32,6 +35,8 @@ float m_Health;
 
 //Zombies dead/alive 
 bool m_Alive;
+
+public:
 //Zombie hit or not
 bool hit();
 
@@ -53,4 +58,3 @@ void update(float elapsedTime, sf::Vector2f playerLocation);
 };
 
 
-}

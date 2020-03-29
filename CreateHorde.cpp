@@ -1,11 +1,14 @@
 #include "main.h" 
 #include "Zombie.h" 
+#include "TextureHolder.h" 
+#include <stdlib.h> 
+#include <time.h> 
+#include<math.h>
 
-
-Zombie* createHorde(intNumZombies, sf::IntRect arena)
+Zombie* createHorde(int numZombies, sf::IntRect arena)
 {
-  Zombie zombies = new Zombie[numZombies];
-  int maxY = arena.height - 20:
+  Zombie* zombies = new Zombie[numZombies];
+  int maxY = arena.height - 20;
   int minY = arena.top +20; 
   int maxX = arena.width +20; 
   int minX = arena.width -20;
@@ -13,7 +16,7 @@ Zombie* createHorde(intNumZombies, sf::IntRect arena)
   for (int i = 0; i < numZombies;i ++ )
   {
     //which side of the arena should the zombies spawn 
-    srand((int)time(0)*i);
+    srand((int)std::time(0)*i);
     int side = (rand() % 4 );
     float x, y;
     switch (side)
@@ -43,7 +46,7 @@ Zombie* createHorde(intNumZombies, sf::IntRect arena)
          break; 
     }
     // zoomer, crawler or boomer
-    srand((int)time(0)*i*2);
+    srand((int)std::time(0)*i*2);
     int type = (rand()%3);
     
     //spawn the new zombies into the array

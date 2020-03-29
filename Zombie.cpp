@@ -1,17 +1,17 @@
 
-#include "zombie.h" 
+#include "Zombie.h" 
 #include "TextureHolder.h" 
 #include <cstdlib> 
 #include <ctime> 
+#include<math.h>
 
-
-void Zombie::spawn(flaot startX, float startY, int type, int seed)
+void Zombie::spawn(float startX, float startY, int type, int seed)
 {
 switch (type)
   {
     case 0: 
     //Boomer
-    m_Sprite = Sprite(TextureHolder::GetTexture(
+    m_Sprite = sf::Sprite(TextureHolder::GetTexture(
     "graphics/boomer.png"));
     
     m_Speed = 40;
@@ -20,15 +20,14 @@ switch (type)
     
     case 1: 
     // zoomer
-    m_Sprite(TextureHolder::GetTexture(
-    "graphics/zoomer.png"))
+    m_Sprite = sf::Sprite(TextureHolder::GetTexture("graphics/zoomer.png"));
     m_Speed = 70;
     m_Health =1 ;
     break;
     
     case 2:
     //Crawler
-    m_Sprite = Sprite(textureHolder::GetTexture(
+    m_Sprite = sf::Sprite(TextureHolder::GetTexture(
     "graphics/crawler"));
     
     m_Speed = 20;
@@ -39,13 +38,13 @@ switch (type)
   /* modify the speed so each zombie has different movement speed 
   but still within a certain range for the class*/
   //set seed 
-  srand((int)time(0)*seed)
+  srand((int)time(0)*seed);
   
-  float speed_Modifier = (rand()%MAX_VARIANCE) + OFFSET;
+  float speed_Modifier = (rand()%MAX_VARRIANCE) + OFFSET;
   
   speed_Modifier = speed_Modifier/100 ; // Now it is expressed as a fraction
   
-  m_Speed *= speed_Modifier;
+  speed_Modifier *= speed_Modifier;
   
   //ini zombie location 
   
@@ -75,8 +74,7 @@ sf::Sprite Zombie::getSprite()
   return m_Sprite;
 }
 
-void Zombie::update(float elapsedTime,
-sf::Vector2f playerLocation)
+void Zombie::update(float elapsedTime, sf::Vector2f playerLocation)
 {
   float playerX = playerLocation.x;
   float playerY = playerLocation.y;
@@ -89,7 +87,7 @@ sf::Vector2f playerLocation)
   }
   if (playerY > m_Position.y)
   {
-    m_Position.x = m_Position.x + m_Speed * elapsedTime;
+    m_Position.y = m_Position.y + m_Speed * elapsedTime;
     
     }
     
@@ -108,8 +106,10 @@ sf::Vector2f playerLocation)
    m_Sprite.setPosition(m_Position);
    
    // Face the sprite in the correct direction 
-   float angle = (atan2(playerY - m_Position.y,
-   playerX - m_Position.x)*180/3.141);
+   float angle = (atan2(playerY - m_Position.y, 
+      playerX - m_Position.x) 
+      * 180) / 3.141; 
+
    
    m_Sprite.setRotation(angle);
    
