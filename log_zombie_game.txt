@@ -4,6 +4,10 @@ this is according to john horton to avoid us having to worry about running out o
 
 "main.h:4:1: error: ‘Zombie’ does not name a type " this error was caused because i had not declared the class Zombie in the start of the document.
 
-The game now starts but is frozen. Why ? Missplacement of a bracket maybe.
+The game now starts but is frozen. Why ? Missplacement of a bracket maybe. - turns out i forgot an event (keyPressed {} ) 
+
+The is a bug the zombies will only chase when player x y is 
+
+
 
 
