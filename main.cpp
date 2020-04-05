@@ -9,6 +9,7 @@
 #include "player.h"
 #include "TextureHolder.h"
 #include "Zombie.h"
+#include "bullet.h"
 
 
 
@@ -56,14 +57,26 @@ sf::IntRect arena;
 //Create the background 
 sf::VertexArray background;
 //Load the texture for our background vertex array
-sf::Texture textureBackground;
-textureBackground.loadFromFile("graphics/background_sheet.png");
+// Load the texture for our background vertex array 
+sf::Texture textureBackground = TextureHolder::GetTexture(
+  "graphics/background_sheet.png");
 
 // Prepare Zombies
 int numZombies;
 int numZombiesAlive;
 Zombie* zombies = nullptr; 
 
+
+//Bullets
+// 100 bullets should do
+Bullet bullets[100];
+int currentBullet = 0;
+int bulletsSpare = 24;
+int bulletsInClip = 6;
+int clipSize = 6;
+float fireRate = 1;
+// When was the fire button last pressed?
+sf::Time lastPressed; 
 
 // the main game loop ------------------------------------------
 while (window.isOpen())
@@ -91,6 +104,25 @@ while (window.isOpen())
       if (state ==State::PLAYING)
       {
         //the main game here 
+        //reloading ! 
+        if (event.key.code == sf::Keyboard::R)
+          {
+            if (bulletsSpare >= clipSize) 
+            {
+              // there are bullets available so it should reload
+              bulletsInClip = clipSize;
+              bulletsSpare -= clipSize;
+            }
+          else if (bulletsSpare > 0)
+            {
+              bulletsInClip = bulletsSpare;
+              bulletsSpare = 0; 
+            }
+            else 
+            {
+              // More here soon?!
+            }
+          }
       }
   
       } 
@@ -136,6 +168,27 @@ while (window.isOpen())
       {
       player.stopRight();
       }
+      if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+      {
+        if (gameTimeTotal.asMilliseconds()
+        - lastPressed.asMilliseconds()
+        > 1000 / fireRate && bulletsInClip > 0)
+        {
+          /* pass the center of player and center of crosshair to the shoot funct
+          */
+          bullets[currentBullet].shoot(
+          player.getCenter().x, player.getCenter().y,
+          mouseWorldPosition.x, mouseWorldPosition.y);
+          
+          currentBullet++;
+          if (currentBullet > 99) 
+          {
+            currentBullet = 0; 
+          }
+          lastPressed = gameTimeTotal;
+          bulletsInClip --;
+        }
+      } // End shooting bullets 
     }  //end wasd while playing 
     
       // Handle the player leveling up 
@@ -237,8 +290,18 @@ while (window.isOpen())
         zombies[i].update(dt.asSeconds(), playerPosition);
       }
     }
+    
+    /*Update inflight bullets ! */ 
+      for ( int i = 0; i < 100; i++)
+      {
+        if (bullets[i].isInFlight()) 
+        {
+          bullets[i].update(dtAsSeconds);
+        }
+      }
    
    }// End updating scen 
+   
         /*
      **************
      Draw the scene
@@ -260,6 +323,15 @@ while (window.isOpen())
         {
           window.draw(zombies[i].getSprite());
         }
+        
+        //draw the bullets 
+        for (int i = 0; i < 100; i++ )
+          {
+            if (bullets[i].isInFlight())
+            {
+              window.draw(bullets[i].getShape());
+            }
+          }
 
         // Draw the player
         window.draw(player.getSprite());

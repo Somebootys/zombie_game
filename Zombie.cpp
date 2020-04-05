@@ -28,7 +28,7 @@ switch (type)
     case 2:
     //Crawler
     m_Sprite = sf::Sprite(TextureHolder::GetTexture(
-    "graphics/crawler"));
+    "graphics/crawler.png"));
     
     m_Speed = 20;
     m_Health = 3; 
